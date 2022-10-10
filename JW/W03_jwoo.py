@@ -47,19 +47,24 @@
 
 
 # #5639
+# #입력부분 수정해보기
 # import sys
 # sys.setrecursionlimit(10 ** 9) # 재귀 허용 깊이를 수동으로 늘려주는 코드
-# input = sys.stdin.readline
+# # input = sys.stdin.readline
+# input = sys.stdin.readlines
 
 # graph = []
 
 # #입력값이 없을 때까지 입력받는 방법
 # #원리 = 개행문자가 입력되면 break되므로 엔터를 한번더 해줘야 입력이 들어간다.
-# while True:
-#     try:
-#         graph.append(int(input()))
-#     except:
-#         break
+# # while True:
+# #     try:
+# #         graph.append(int(input()))
+# #     except:
+# #         break
+
+# for i in input:
+#     graph.append(int(input()))
 
 # def dfs(start, end):
 
@@ -96,7 +101,7 @@
  
 # def find(x):
 #     if x != Vroot[x]:
-#         Vroot[x] = find(Vroot[x])``
+#         Vroot[x] = find(Vroot[x])
         
 #     return Vroot[x]
  
@@ -295,7 +300,7 @@
 #     print('YES' if flag == True else 'NO')
 
 
-#21606
+# #21606
 # #1:00
 # #3:00
 # #내 코드
@@ -444,12 +449,12 @@
 
 
 
-#2573
-#9:04
-#10:30
-#pypy통과, python3 시간초과
-#찾아보니 dfs만으로는 python에서는 시간초과가남.
-#밑에 bfs 쓰는 코드 읽어보기.
+# # 2573
+# # 9:04
+# # 10:30
+# # pypy통과, python3 시간초과
+# # 찾아보니 dfs만으로는 python에서는 시간초과가남.
+# # 밑에 bfs 쓰는 코드 읽어보기.
 # import sys
 # input = sys.stdin.readline
 # sys.setrecursionlimit(10**4)
@@ -863,36 +868,195 @@
 # print(visited[end])
 
 
-#2665
-import sys
-from heapq import heappush, heappop
+# #2665
+# import sys
+# from heapq import heappush, heappop
 
-input = sys.stdin.readline
-n = int(input())
-room = []
-for _ in range(n):
-    room.append(list(map(int, input().rstrip())))
-visit = [[0] * n for _ in range(n)]
+# input = sys.stdin.readline
+# n = int(input())
+# room = []
+# for _ in range(n):
+#     room.append(list(map(int, input().rstrip())))
+# visit = [[0] * n for _ in range(n)]
 
-def dijkstra():
-    dx = [1, -1, 0, 0]
-    dy = [0, 0, -1, 1]
-    heap = []
-    heappush(heap, [0, 0, 0])
-    visit[0][0] = 1
-    while heap:
-        a, x, y = heappop(heap)
-        if x == n - 1 and y == n - 1:
-            print(a)
-            return
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-            if 0 <= nx < n and 0 <= ny < n and visit[nx][ny] == 0:
-                visit[nx][ny] = 1
-                if room[nx][ny] == 0:
-                    heappush(heap, [a + 1, nx, ny])
-                else:
-                    heappush(heap, [a, nx, ny])
 
-dijkstra()
+# def is_valid_coord(x, y):
+#     return 0 <= y < n and 0 <= x < n
+
+# def dijkstra():
+#     dx = [1, -1, 0, 0]
+#     dy = [0, 0, -1, 1]
+#     heap = []
+#     heappush(heap, [0,0,0])
+#     visit[0][0] = 1
+
+#     while len(heap):
+#         a, x, y = heappop(heap)
+
+#         if x == n-1 and y == n-1:
+#             print(a)
+#             return
+
+#         for i in range(4):
+#             nx = x + dx[i]
+#             ny = y + dy[i]
+#             if is_valid_coord(nx, ny) and visit[nx][ny] == 0:
+#                 visit[nx][ny] = 1
+#                 if room[nx][ny] == 0:
+#                     heappush(heap, [a+1, nx, ny])
+#                 elif room[nx][ny] == 1:
+#                     heappush(heap, [a, nx, ny])
+
+# dijkstra()
+
+
+
+# #7569
+# import sys
+# from collections import deque
+
+# input = sys.stdin.readline
+
+# M, N, H = map(int, input().split())
+
+# # box = [[list(map(int, input().split())) for _ in range(N)] for _ in range(H)]
+# dq = deque()
+# box = []
+# for i in range(H):
+#     tmp = []
+#     for j in range(N):
+#         tmp.append(list(map(int,input().split())))
+#         for k in range(M):
+#             if tmp[j][k]==1:
+#                 dq.append((i, j, k))
+#     box.append(tmp)
+
+# # 앞, 오, 뒤, 왼, 위, 아래
+# dx = (0, 1, 0, -1, 0, 0)
+# dy = (1, 0, -1, 0, 0, 0)
+# dz = (0, 0, 0, 0, 1, -1)
+
+# def is_valid_coord(z, y, x):
+#     return 0 <= x < M and 0 <= y < N and 0 <= z < H
+
+
+
+# #익은 토마토를 검사해나가면서
+# def bfs():
+
+#     while len(dq):
+#         #가로, 세로, 높이, day
+#         z, y, x = dq.popleft()
+
+#         for i in range(0, 6):
+#             nx = x + dx[i]
+#             ny = y + dy[i]
+#             nz = z + dz[i]
+#             # print(nz, ny, nx)
+#             if is_valid_coord(nz, ny, nx):
+#                 if box[nz][ny][nx] == 0:
+#                     #안익은 곳 발견하면 익히기
+#                     # chk[nz][ny][nx] = 1
+#                     box[nz][ny][nx] = box[z][y][x] + 1
+#                     dq.append((nz, ny, nx))
+
+
+# bfs()
+
+# day = 0
+# #안익은 토마토 있는지 검사하기
+# for i in range(H):
+#     for j in range(N):
+#         for k in range(M):
+#             if box[i][j][k] == 0:
+#                 print(-1)
+#                 exit(0)
+#         day = max(day, max(box[i][j]))
+
+# print(day-1)
+
+
+
+# #3055
+# from collections import deque
+
+
+# r, c = map(int, input().split())
+# graph = [list(input()) for _ in range(r)]
+# visited = [[-1] * c for _ in range(r)]
+# dx, dy = (-1, 1, 0, 0), (0, 0, -1, 1)
+
+
+# def bfs():
+#     q = deque()
+
+#     for i in range(r):
+#         for j in range(c):
+#             if graph[i][j] == "*":
+#                 q.appendleft((i, j))
+#                 visited[i][j] = 0
+#             elif graph[i][j] == "S":
+#                 q.append((i, j))
+#                 visited[i][j] = 0
+
+#     while q:
+#         x, y = q.popleft()
+
+#         for i in range(4):
+#             nx, ny = x + dx[i], y + dy[i]
+
+#             if not 0 <= nx < r or not 0 <= ny < c:
+#                 continue
+#             if visited[nx][ny] != -1:
+#                 continue
+#             if graph[nx][ny] == "*" or graph[nx][ny] == "X":
+#                 continue
+#             if graph[nx][ny] == "D" and graph[x][y] == "*":
+#                 continue
+#             if graph[nx][ny] == "D" and graph[x][y] == "S":
+#                 return visited[x][y] + 1
+
+#             q.append((nx, ny))
+#             visited[nx][ny] = visited[x][y] + 1
+#             graph[nx][ny] = graph[x][y]
+
+#     return "KAKTUS"
+
+
+# print(bfs())
+
+
+# #2294
+# import sys
+# from collections import deque
+# input = sys.stdin.readline
+
+# n, k = map(int, input().split())
+# chk = [0 for _ in range(k+1)]
+# coins = [int(input()) for _ in range(n)]
+
+# q = deque()
+
+# for coin in coins:
+#     if coin < k:
+#         chk[coin] = 1
+#         q.append([coin, 1])
+
+# while len(q):
+#     cum, cnt = q.popleft()
+
+#     if cum == k:
+#         print(cnt)
+#         break
+
+#     for coin in coins:
+#         new_cum = cum + coin
+#         new_cnt = cnt + 1
+#         if new_cum > k:
+#             continue
+#         elif new_cum <= k and chk[new_cum] == 0:
+#             q.append([new_cum, new_cnt])
+#             chk[new_cum] = 1
+
+# if cum != k:
+#     print(-1)
