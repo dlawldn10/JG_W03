@@ -761,9 +761,7 @@
 #     x, d = q.popleft()
 
 #     if d == K:
-#         # print(x)
 #         ans.append(x)
-#         # print(chk)
 #         d = 1
 #         continue
         
@@ -1060,3 +1058,201 @@
 
 # if cum != k:
 #     print(-1)
+
+
+
+# #2252
+# from collections import deque
+# import sys
+
+# input = sys.stdin.readline
+
+# #노드들의 갯수
+# n = int(input())
+
+# #간선들의 정보
+# m = int(input())
+
+# #진입차수를 기록하는 리스트
+# inDegree = [0]*(n+1)
+
+# #정렬결과를 저장하는 리스트
+# result = [0]*(n+1)
+
+# #간선들을 인접 리스트로 저장
+# connect = [[]*(n+1) for _ in range(n+1)]
+# for i in range(1, m+1):
+#     x, y = map(int, input().split())
+#     connect[x].append(y)
+#     inDegree[y] += 1
+
+# #탐색을 위한 큐 선언
+# q = deque()
+
+# #진입차수가 0인 노드를 큐에 삽입.
+# for i in range(1, n+1):
+#     if inDegree[i] == 0:
+#         q.append(i)
+
+# #정렬이 완전히 수행되려면 정확히 n개의 노드를 방문.
+# for i in range(1, n+1):
+#     # print(q)
+#     x = q.popleft()
+#     result[i] = x
+#     for y in connect[x]:
+#         #새롭게 진입차수가 0이된 정점을 큐에 삽입.
+#         inDegree[y] -= 1
+#         if inDegree[y] == 0:
+#             q.append(y)
+
+# #결과 출력
+# for i in range(1, n+1):
+#     print(result[i], end=' ')
+
+
+# #2637
+# from collections import deque
+# import sys
+# input = sys.stdin.readline
+
+# n = int(input())
+# m = int(input())
+# connect = [[]*(n+1) for _ in range(n+1)]
+# degree = [0]*(n+1)
+# needs = [[0]*(n+1) for _ in range(n+1)]
+
+# for i in range(m):
+#     next, start, cnt = map(int, input().split())
+#     connect[start].append((next, cnt))
+#     degree[next] += 1
+
+# q = deque()
+# for i in range(1, n+1):
+#     if degree[i] == 0:
+#         q.append(i)
+
+
+# while q:
+    
+#     #현재 부품
+#     now = q.popleft()
+
+#     for next, cnt in connect[now]:
+#         #현재 부품이 기본 부품인지 아닌지 판별
+#         #기본 부품일때
+#         if needs[now].count(0) == n+1:
+#             needs[next][now] += cnt
+#         else:
+#         #중간 부품일때
+#             for i in range(1, n+1):
+#                 needs[next][i] += needs[now][i] * cnt
+
+#         degree[next] -= 1
+#         if degree[next] == 0:
+#             q.append(next)
+
+# # print(connect)
+# # print(degree)
+# # print(needs)
+
+# for x in enumerate(needs[n]):
+#     if x[1] > 0:
+#         print(*x)
+
+
+# #1432
+# #다시보기
+# import heapq
+# import sys
+# input = sys.stdin.readline
+
+# n = int(input())
+# graph = [[] for _ in range(n+1)]
+# degree = [0]*(n+1)
+# result = [0]*(n+1)
+
+# for i in range(0, n):
+#     l = input().rstrip()
+#     for j in range(0, n):
+#         if l[j] == '1':
+#             graph[j+1].append(i+1)
+#             degree[i+1] += 1
+# # print(graph)
+# # print(degree)
+
+# q = []
+# for i in range(1, n+1):
+#     if degree[i] == 0:
+#         heapq.heappush(q, -i)
+
+# N = n
+# while q:
+#     x = -heapq.heappop(q)
+#     result[x] = N
+
+#     for i in graph[x]:
+#         degree[i] -= 1
+#         if degree[i] == 0:
+#             heapq.heappush(q, -i)
+
+#     N -= 1
+
+# if result.count(0) > 1:
+#     print(-1)
+# else:
+#     print(*result[1:])
+
+
+
+# #1948
+# from collections import deque
+# import sys
+# input = sys.stdin.readline
+
+# n = int(input())
+# m = int(input())
+
+# time = [0] * (n+1)
+# degree = [0]*(n+1)
+# graph = [[] for _ in range(n+1)]
+# bgraph = [[] for _ in range(n+1)]
+# cnt = [[] for _ in range(n+1)]
+
+# for i in range(m):
+#     a, b, t = map(int, input().split())
+#     graph[a].append((t, b))
+#     bgraph[b].append(a)
+#     degree[b] += 1
+
+# start, end = map(int, input().split())
+
+# q = deque()
+# q.append(start)
+
+# while q:
+#     #현재(출발) 도시
+#     now = q.popleft()
+
+#     for t, e in graph[now]:
+#         degree[e] -= 1
+#         if time[e] < time[now] + t:
+#             time[e] = time[now] + t
+#             cnt[e] = [now]
+#         elif time[e] == time[now] + t:
+#             cnt[e].append(now)
+
+#         # 선행 도로를 모두 지나갔을 때
+#         if degree[e] == 0:
+#             q.append(e)
+
+# q.append(end)
+# route = set()
+# while q:
+#     now = q.popleft()
+#     for x in cnt[now]:
+#         if (now, x) not in route:
+#             route.add((now, x))
+#             q.append(x)
+
+# print(time[end])
+# print(len(route))    
