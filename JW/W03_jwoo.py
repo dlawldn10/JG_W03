@@ -747,9 +747,6 @@
 #     graph[a].append(b)
 
 # chk = [False]*(N+1)
-# # print(graph)
-# # print(chk)
-
 
 # q = deque()
 # chk[X] = True
@@ -1256,3 +1253,163 @@
 
 # print(time[end])
 # print(len(route))    
+
+
+
+#################
+##개인 Practice##
+#################
+
+
+# #2098
+# #시간 제한과 메모리 제한이 타이트해서 DP를 이용해서 경로의 최소값을 메모이제이션하면서 풀어야 한다고 함.
+# #또한 비트마스크를 이용해서 시간 절약해야함.
+# #다음에 다시 보기
+# N = int(input())  # 도시의 수
+# W = [list(map(int, input().split())) for _ in range(N)]
+# dp = [[0] * (1 << N-1) for _ in range(N)]  # 도시가 4개라면 1000(각 자리수별로 도시 표시) == 2**n
+
+# def tsp(i, route):
+#     if dp[i][route] != 0:
+#         return dp[i][route]
+
+#     # 출발하는 도시를 0으로 정했기 때문에 모든 경로를 돌았을 때, 현위치(i)에서 0으로 갈 경우 추가
+#     if route == (1 << (N-1)) - 1:
+#         if W[i][0]:
+#             return W[i][0]
+#         else:
+#             return float('inf')
+
+#     min_route = float('inf')
+
+#     for j in range(1, N):
+#         if not W[i][j]:  # i에서 j로 가는 간선 비용이 없다면
+#             continue
+#         if route & (1 << j-1):  # 해당 도시를 방문했다면 
+#             continue
+#         D = W[i][j] + tsp(j, route | (1 << (j-1)))  # i -> j 간선 + j에서 다음 경로로 가는 간선
+#         if min_route > D:
+#             min_route = D
+#     # 루트가 모든 도시를 순회할 때까지 완전탐색하기 때문에 최소값 계속 갱신
+#     dp[i][route] = min_route
+
+#     return min_route
+
+# print(tsp(0,0))  # 순서는 상관X 사이클의 최소비용을 구하면 되기 때문에 임의의 도시 0에서 시작
+
+
+
+# #2644
+# #2:35
+# #2:45
+# import sys
+# input = sys.stdin.readline
+
+# n = int(input())
+# p1, p2 = map(int, input().split())
+# m = int(input())
+# adj = [[] for _ in range(n+1)]
+# for _ in range(m):
+#     a, b = map(int, input().split())
+#     adj[a].append(b)
+#     adj[b].append(a)
+# visit = [0]*(n+1)
+# # print(adj)
+
+# isRelative = False
+
+# def dfs(i, depth):
+#     global p2, isRelative
+
+#     if i == p2:
+#         print(depth)
+#         isRelative = True
+#         return
+
+#     for j in adj[i]:
+#         if visit[j] == 0:
+#             visit[j] = 1
+#             dfs(j, depth+1)
+
+# dfs(p1, 0)
+# if not isRelative:
+#     print(-1)
+
+
+# #2667
+# #2:45
+# #4:54
+# #중간중간 놀았음...
+# import sys, pprint
+# input = sys.stdin.readline
+# n = int(input())
+# adj = [[0]*(n) for _ in range(n)]
+# visited = [[0]*(n) for _ in range(n)]
+# for i in range(n):
+#     tmp = input().rstrip()
+#     for j in range(n):
+#         adj[i][j] = int(tmp[j])
+# # pprint.pprint(adj)
+
+# dx = (0, 1, 0, -1)
+# dy = (1, 0, -1, 0)
+
+# def is_valid_coord(y, x):
+#     return 0<= y < n and 0 <= x < n
+
+
+# def dfs(sy, sx, num):
+#     for k in range(4):
+#         nx = sx + dx[k]
+#         ny = sy + dy[k]
+#         if is_valid_coord(ny, nx) and visited[ny][nx] == 0 and adj[ny][nx] == 1:
+#             #방문 안한곳 + adj가 1인 곳
+#             visited[ny][nx] = num
+#             cntList[num-1] += 1
+#             dfs(ny, nx, num)
+
+# num = 0
+# cntList = []
+# for i in range(n):
+#     for j in range(n):
+#         if visited[i][j] == 0 and adj[i][j] == 1:
+#             #방문 안한곳 + adj가 1인 곳
+#             num += 1
+#             cntList.append(1)
+#             visited[i][j] = num
+#             dfs(i, j, num)
+
+# # pprint.pprint(visited)
+# # pprint.pprint(cntList)
+# print(num)
+# for ans in sorted(cntList):
+#     print(ans)
+
+
+
+# #1697
+# import sys
+# from collections import deque
+
+# N, K = map(int, input().split())
+# MAX = 10 ** 5
+# dist = [0]*(MAX+1)
+
+# def is_valid_coord(x):
+#     return 0 <= x < MAX+1
+
+# def bfs():
+#     q = deque()
+#     q.append(N)
+
+#     while q:
+#         x = q.popleft()
+#         if x == K:
+#             print(dist[x])
+#             break
+#         for nx in (x-1, x+1, x*2):
+#             if is_valid_coord(nx) and not dist[nx]:
+#                 dist[nx] = dist[x]+1
+#                 q.append(nx)
+
+# bfs()
