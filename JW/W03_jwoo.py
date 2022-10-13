@@ -1413,3 +1413,82 @@
 #                 q.append(nx)
 
 # bfs()
+
+
+# #2468
+# #1:23
+# #1:56
+# import sys
+# input = sys.stdin.readline
+# sys.setrecursionlimit(10**5)
+# N = int(input())
+# graph = []
+# max_height = 0
+
+# for _ in range(N):
+#     tmp = list(map(int, input().split()))
+#     graph.append(tmp)
+#     for i in range(N):
+#         max_height = max(max_height, tmp[i])
+
+# # print(graph)
+# # print(max_height)
+# # print(visited)
+# dx = (0, -1, 0, 1)
+# dy = (1, 0, -1, 0)
+
+# def is_valid_coord(y, x):
+#     return 0 <= x < N and 0 <= y < N
+
+# def dfs(sy, sx, height):
+
+#     for k in range(4):
+#         nx = sx + dx[k]
+#         ny = sy + dy[k]
+#         if is_valid_coord(ny, nx) and visited[ny][nx] == 0 and graph[ny][nx] > wh:
+#             visited[ny][nx] = 1
+#             dfs(ny, nx, height)
+
+
+# result = []
+# for wh in range(1, max_height):
+#     ans = 0
+#     visited = [[0]*(N) for _ in range(N)]
+#     for i in range(N):
+#         for j in range(N):
+#             if visited[i][j] == 0 and graph[i][j] > wh:
+#                 ans += 1
+#                 visited[i][j] = 1
+#                 dfs(i, j, wh)
+#     result.append(ans)            
+#     # print(ans)
+
+# print(max(result) if len(result) > 0 else 1)
+
+
+# #5014
+# import sys
+# from collections import deque
+
+# def bfs(v):
+#     q = deque([v])
+#     visited[v] = 1
+#     while q:
+#         v = q.popleft()
+#         if v == G:
+#             return count[G]
+#         for i in (v+U, v-D): #U만큼 위로 or D만큼 아래로
+#             if 0 < i <= F and not visited[i]:
+#                 visited[i] = 1
+#                 count[i] = count[v] + 1
+#                 q.append(i)
+#     if count[G] == 0:
+#         return "use the stairs"
+
+# input = sys.stdin.readline
+# F, S, G, U, D = map(int, input().split())
+# visited = [0 for i in range(F+1)]
+# count = [0 for i in range(F+1)]
+# print(bfs(S))
+
+
